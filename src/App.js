@@ -13,8 +13,8 @@ class App extends Component {
     super(props);
 
     let question = {
-    questionText : 'WELCOME',
-    answers : ['Loading', 'The', 'Game', 'Please Wait'],
+    questionText : 'Loading',
+    answers : ['', '', '', ''],
     answer : 'null'  
     }
 
@@ -33,6 +33,17 @@ class App extends Component {
 
   }
 
+  shuffle = (array) => {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+  }
+
+  return array;
+  }
+
 componentDidMount() {
   let questionList = []
    fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=hard&type=multiple')
@@ -42,6 +53,7 @@ componentDidMount() {
       for (let i = 0; i < data.results.length; i++) {
         let possibleAnswers = data.results[i].incorrect_answers;
         possibleAnswers.push(data.results[i].correct_answer)
+        possibleAnswers = this.shuffle(possibleAnswers);
 
         let question = {
           questionText : data.results[i].question,
@@ -136,12 +148,9 @@ this.setState(
 
   render() {
 
-    console.log(this.state)
-    if (this.state.questionList != null) {
-console.log(this.state.questionList[0])
-    }
+ 
 
-    if (this.state.questionNumber > 15) {
+    if (this.state.questionNumber > 14) {
       return(
 
         <div className = "App">

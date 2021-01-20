@@ -2,7 +2,7 @@ import React from 'react'
 
 const displayMoney = (number) => {
 
-    switch (number) {
+    switch (number + 1) {
         case 1: return 100 
         case 2: return 200
         case 3: return 300
@@ -26,7 +26,7 @@ const displayMoney = (number) => {
 export default function board(props) {
     return (
         <div>
-            <h1>You are on Question: {props.questionNumber}</h1>
+            <h1>You are on Question: {props.questionNumber + 1}</h1>
             <h1>This question is for: £{displayMoney(props.questionNumber)}</h1>
         </div>
     )
