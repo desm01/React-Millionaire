@@ -13,9 +13,9 @@ class App extends Component {
     super(props);
 
     let question = {
-    questionText : 'What is the capital of the UK?',
-    answers : ['Bristol', 'London', 'Manchester', 'Dublin'],
-    answer : 'London'  
+    questionText : 'WELCOME',
+    answers : ['Loading', 'The', 'Game', 'Please Wait'],
+    answer : 'null'  
     }
 
     let lifeLine = {
@@ -24,7 +24,7 @@ class App extends Component {
     }
 
     this.state = {
-      questions : question,
+      currentQuestion : question,
       questionList : null,
       lifeLines : lifeLine,
       playerAlive : true,
@@ -40,9 +40,12 @@ componentDidMount() {
   .then(data => 
     {
       for (let i = 0; i < data.results.length; i++) {
+        let possibleAnswers = data.results[i].incorrect_answers;
+        possibleAnswers.push(data.results[i].correct_answer)
+
         let question = {
           questionText : data.results[i].question,
-          possibleAnswers : data.results[i].incorrect_answers,
+          answers : possibleAnswers,
           answer : data.results[i].correct_answer
         }
         questionList.push(question);
@@ -52,7 +55,8 @@ componentDidMount() {
       console.log(questionList)
       this.setState(
         {
-          questionList : questionList
+          questionList : questionList,
+          currentQuestion : questionList[0]
         }
       )
     }
@@ -109,20 +113,23 @@ this.setState(
 
   checkAnswer = (answer) => {
 
-    if (this.state.questions.answer !== answer) {
-this.setState({
+    if (this.state.currentQuestion.answer !== answer) {
+    this.setState({
   playerAlive : false
-}
-)
-    }
+      }
+    )
+  }
 
-    else if (this.state.questions.answer === answer) {
+    else if (this.state.currentQuestion.answer === answer) {
      //  Correct
      console.log('correct')
       let number = this.state.questionNumber + 1;
 
+      let nextQuest = this.state.questionList.pop();
+
      this.setState({
-       questionNumber : number
+       questionNumber : number,
+       currentQuestion : nextQuest
      })
     }
   }
@@ -149,8 +156,8 @@ console.log(this.state.questionList[0])
       <div className="App">
         <LifeLines audienceHandler = {this.askAudience} fiftyHandler = {this.fiftyFifty} fiftyFifty = {this.state.lifeLines.fiftyFifty} askAudience = {this.state.lifeLines.askAudience} ></LifeLines>
         <Board questionNumber = {this.state.questionNumber } ></Board>
-        <QuestionBox question = {this.state.questions} ></QuestionBox>
-        <Answers checkAnswer = { this.checkAnswer } answers = {this.state.questions} ></Answers>
+        <QuestionBox question = {this.state.currentQuestion} ></QuestionBox>
+        <Answers checkAnswer = { this.checkAnswer } answers = {this.state.currentQuestion} ></Answers>
       </div>
       );
     }
@@ -161,7 +168,7 @@ console.log(this.state.questionList[0])
         <div className = "App">
           <h1>Game Over</h1>
           
-          <h3>The correct answer was {this.state.questions.answer}</h3>
+          <h3>The correct answer was {this.state.currentQuestion.answer}</h3>
         </div>
         )
       }
