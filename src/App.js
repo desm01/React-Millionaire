@@ -25,10 +25,85 @@ class App extends Component {
 
     this.state = {
       questions : question,
+      questionList : null,
       lifeLines : lifeLine,
       playerAlive : true,
-      questionNumber : 1
+      questionNumber : 0
     }
+
+  }
+
+componentDidMount() {
+  let questionList = []
+   fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=hard&type=multiple')
+  .then(response => response.json())
+  .then(data => 
+    {
+      for (let i = 0; i < data.results.length; i++) {
+        let question = {
+          questionText : data.results[i].question,
+          possibleAnswers : data.results[i].incorrect_answers,
+          answer : data.results[i].correct_answer
+        }
+        questionList.push(question);
+
+      }
+
+      console.log(questionList)
+      this.setState(
+        {
+          questionList : questionList
+        }
+      )
+    }
+
+    )
+  
+
+
+}
+
+
+askAudience = () => {
+let currentAskAudience = this.state.lifeLines.askAudience - 1;
+let currentFifty = this.state.lifeLines.fiftyFifty;
+
+console.log('hi')
+
+let currentLifeLines = {
+  fiftyFifty : currentFifty,
+  askAudience : currentAskAudience
+}
+
+this.setState(
+  {
+    lifeLines : currentLifeLines
+  }
+)
+
+}
+
+
+  fiftyFifty = () => {
+ 
+
+
+    let currentFifty = this.state.lifeLines.fiftyFifty;
+    let currentAudience = this.state.lifeLines.askAudience;
+    currentFifty = currentFifty - 1;
+
+    console.log(currentFifty)
+
+    let currentLifeLines = {
+      fiftyFifty : currentFifty,
+      askAudience : currentAudience
+
+    }
+
+    this.setState({
+      lifeLines : currentLifeLines }
+    )
+
 
   }
 
@@ -44,10 +119,20 @@ this.setState({
     else if (this.state.questions.answer === answer) {
      //  Correct
      console.log('correct')
+      let number = this.state.questionNumber + 1;
+
+     this.setState({
+       questionNumber : number
+     })
     }
   }
 
   render() {
+
+    console.log(this.state)
+    if (this.state.questionList != null) {
+console.log(this.state.questionList[0])
+    }
 
     if (this.state.questionNumber > 15) {
       return(
@@ -62,7 +147,7 @@ this.setState({
     if (this.state.playerAlive === true) {
     return (
       <div className="App">
-        <LifeLines></LifeLines>
+        <LifeLines audienceHandler = {this.askAudience} fiftyHandler = {this.fiftyFifty} fiftyFifty = {this.state.lifeLines.fiftyFifty} askAudience = {this.state.lifeLines.askAudience} ></LifeLines>
         <Board questionNumber = {this.state.questionNumber } ></Board>
         <QuestionBox question = {this.state.questions} ></QuestionBox>
         <Answers checkAnswer = { this.checkAnswer } answers = {this.state.questions} ></Answers>

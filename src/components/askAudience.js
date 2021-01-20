@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function askAudience() {
+export default function askAudience(props) {
     return (
         <div>
-            <button>Ask the audience</button>
+            <button onClick ={props.askAudience} >Ask the audience</button>
         </div>
     )
 }
