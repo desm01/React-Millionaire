@@ -99,6 +99,31 @@ this.setState(
 
 }
 
+removeTwoAnswers = (answers) => {
+let counter = 0;
+
+  for (let i = 0; i < answers.length; i++) {
+      if (answers[i] === '') {
+        counter++;
+      }
+
+      if (counter >= 2) {
+        return;
+      }
+    
+  }
+
+  let num = Math.floor((Math.random() * 3) + 0);
+
+  if (answers[num] !== this.state.currentQuestion.answer) {
+    answers[num] = '';
+  }
+
+
+
+  return this.removeTwoAnswers(answers);
+
+}
 
   fiftyFifty = () => {
  
@@ -107,6 +132,10 @@ this.setState(
     let currentFifty = this.state.lifeLines.fiftyFifty;
     let currentAudience = this.state.lifeLines.askAudience;
     currentFifty = currentFifty - 1;
+
+    let currentAnswers = this.removeTwoAnswers(this.state.currentQuestion.answers)
+
+
 
     console.log(currentFifty)
 
@@ -117,6 +146,7 @@ this.setState(
     }
 
     this.setState({
+      answers : currentAnswers,
       lifeLines : currentLifeLines }
     )
 
