@@ -44,39 +44,54 @@ class App extends Component {
   return array;
   }
 
-componentDidMount() {
+getQuestions = async (difficulty) => {
   let questionList = []
-   fetch('https://opentdb.com/api.php?amount=15&category=9&difficulty=hard&type=multiple')
-  .then(response => response.json())
-  .then(data => 
-    {
-      for (let i = 0; i < data.results.length; i++) {
-        let possibleAnswers = data.results[i].incorrect_answers;
-        possibleAnswers.push(data.results[i].correct_answer)
-        possibleAnswers = this.shuffle(possibleAnswers);
+  await fetch('https://opentdb.com/api.php?amount=5&category=9&difficulty='+ difficulty +'&type=multiple')
+ .then(response => response.json())
+ .then(data => 
+   {
+     for (let i = 0; i < data.results.length; i++) {
+       let possibleAnswers = data.results[i].incorrect_answers;
+       possibleAnswers.push(data.results[i].correct_answer)
+       possibleAnswers = this.shuffle(possibleAnswers);
 
-        let question = {
-          questionText : data.results[i].question,
-          answers : possibleAnswers,
-          answer : data.results[i].correct_answer
-        }
-        questionList.push(question);
+       let question = {
+         questionText : data.results[i].question,
+         answers : possibleAnswers,
+         answer : data.results[i].correct_answer
+       }
+       questionList.push(question);
 
-      }
+     }
 
-      console.log(questionList)
+     if (this.state.currentQuestion.questionText === 'Loading') {
       this.setState(
         {
           questionList : questionList,
           currentQuestion : questionList[0]
         }
       )
-    }
+     }
 
-    )
+     else {
+      this.setState(
+        {
+          questionList : questionList
+        }
+      )
+     }
+
+   })
+}
+
+
+
+async componentDidMount() {
+
+    await this.getQuestions('easy');
+    await this.getQuestions('medium');
+    await this.getQuestions('hard');
   
-
-
 }
 
 
@@ -84,7 +99,22 @@ askAudience = () => {
 let currentAskAudience = this.state.lifeLines.askAudience - 1;
 let currentFifty = this.state.lifeLines.fiftyFifty;
 
-console.log('hi')
+let num = Math.floor((Math.random() * 10) + 1);
+
+if (num > 1) {
+  //Corrrect Answer
+  let chance = Math.floor(Math.random() * (99 - 60 + 1) ) + 60;
+  alert(chance + "% of the audience think that the answer is: " + this.state.currentQuestion.answer)
+
+}
+
+else if ( num === 0  ) {
+  // Wrong Answer 
+  let chance = Math.floor(Math.random() * (40 - 30 + 1) ) + 30;
+  let randomAns = Math.floor((Math.random() * 3) + 0);
+  alert(chance + "% of the audience think that the answer is: " + this.state.currentQuestion.answers[randomAns])
+}
+
 
 let currentLifeLines = {
   fiftyFifty : currentFifty,

@@ -35,7 +35,7 @@ export default function lifeLines(props) {
 
     if (props.fiftyFifty === 1 && props.askAudience === 1) {
         return (
-            <div>
+            <div style = {style}>
             <FiftyFifty fiftyFifty = {props.fiftyHandler} ></FiftyFifty>
             <AskAudience askAudience = {props.audienceHandler} ></AskAudience>
             </div>
