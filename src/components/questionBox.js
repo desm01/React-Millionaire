@@ -1,13 +1,19 @@
 import React from 'react'
+import  './question.css'
 
 export default function questionBox(props) {
 
+
     let questionText = props.question.questionText;
-    questionText.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+
+
+    var div = document.createElement('div');
+    div.innerHTML = questionText
+    var decoded = div.firstChild.nodeValue;
 
     return (        
-        <div>
-            <h1>{questionText}</h1>
+        <div className = "question">
+            <h1>{decoded}</h1>
         </div>
     )
 }

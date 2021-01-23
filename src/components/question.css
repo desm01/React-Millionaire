@@ -1,0 +1,20 @@
+.question {
+width: 60%;
+    font-size : 10pt;
+    margin-left: 20%;
+    padding : 10px;
+    background-Color : #6930c3;
+    color : white;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+h1 {
+    background-Color : #6930c3;
+    color : #80FFDB;
+}
+.answers {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    
+}

@@ -236,8 +236,7 @@ let counter = 0;
       return (
         <div className = "App">
           <h1>Game Over</h1>
-          
-          <h3>The correct answer was {this.state.currentQuestion.answer}</h3>
+          <h1>The correct answer was {this.state.currentQuestion.answer}</h1>
         </div>
         )
       }

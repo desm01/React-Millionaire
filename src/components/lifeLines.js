@@ -4,8 +4,11 @@ import AskAudience from './askAudience'
 
 const style = {
     display : 'flex',
-    justifyContent : 'center'
+    justifyContent : 'center',
+    padding : '20px'
 }
+
+
 
 export default function lifeLines(props) {
 
