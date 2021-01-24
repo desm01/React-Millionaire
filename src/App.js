@@ -74,9 +74,12 @@ getQuestions = async (difficulty) => {
      }
 
      else {
+       let currentQuestions = this.state.questionList;
+       let q = currentQuestions.concat(questionList);
+
       this.setState(
         {
-          questionList : questionList
+          questionList : q
         }
       )
      }
@@ -208,6 +211,10 @@ let counter = 0;
 
   render() {
 
+
+    if ( this.state.currentQuestion.answer !== '' ) {
+      console.log(this.state.currentQuestion.answer)
+    }
  
 
     if (this.state.questionNumber > 14) {
