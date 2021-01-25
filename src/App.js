@@ -6,6 +6,7 @@ import QuestionBox from './components/questionBox'
 import Answers from './components/answers'
 import LifeLines from './components/lifeLines'
 import Board from './components/board'
+import WalkAway from './components/walkAway'
 
 class App extends Component {
 
@@ -28,10 +29,13 @@ class App extends Component {
       questionList : null,
       lifeLines : lifeLine,
       playerAlive : true,
+      walkAway : false,
       questionNumber : 0
     }
 
   }
+
+
 
   shuffle = (array) => {
     for (var i = array.length - 1; i > 0; i--) {
@@ -209,6 +213,40 @@ let counter = 0;
     }
   }
 
+walkAway = () => {
+  console.log('walk away')
+  this.setState({
+    walkAway : true
+  })
+}
+
+refresh = () => {
+  window.location.reload(false);
+}
+
+displayMoney = (number) => {
+
+  switch (number + 1) {
+      case 1: return 100 
+      case 2: return 200
+      case 3: return 300
+      case 4: return 500
+      case 5: return 1000
+      case 6: return 2000
+      case 7: return 4000
+      case 8: return 8000
+      case 9: return 16000
+      case 10: return 32000
+      case 11: return 64000
+      case 12: return 125000
+      case 13: return 250000
+      case 14: return 500000
+      case 15: return 1000000
+      default: return 'Error';
+  }
+
+}
+
   render() {
 
 
@@ -227,11 +265,20 @@ let counter = 0;
       )
     }
 
+    if (this.state.walkAway === true) {
+      return (
+        <div className = "App">
+          <h1>You have walked away with: £{this.displayMoney(this.state.questionNumber)}</h1>
+        </div>
+      )
+    }
+
     if (this.state.playerAlive === true) {
     return (
       <div className="App">
+        <WalkAway walkAway = {this.walkAway} ></WalkAway>
         <LifeLines audienceHandler = {this.askAudience} fiftyHandler = {this.fiftyFifty} fiftyFifty = {this.state.lifeLines.fiftyFifty} askAudience = {this.state.lifeLines.askAudience} ></LifeLines>
-        <Board questionNumber = {this.state.questionNumber } ></Board>
+        <Board displayMoney = {this.displayMoney} questionNumber = {this.state.questionNumber } ></Board>
         <QuestionBox question = {this.state.currentQuestion} ></QuestionBox>
         <Answers checkAnswer = { this.checkAnswer } answers = {this.state.currentQuestion} ></Answers>
       </div>
@@ -240,10 +287,27 @@ let counter = 0;
   
 
     else if (this.state.playerAlive === false) {
+
+      let text = this.state.currentQuestion.answer;
+
+      var div = document.createElement('div');
+      div.innerHTML = text
+      text = div.firstChild.nodeValue;
+
+      let buttonStyle = {
+        color : '#80FFDB',
+        backgroundColor : '#6930c3',
+        fontSize : '12pt',
+        padding : '10px',
+        borderRadius : '10px',
+        borderStyle : 'none'
+    }
+
       return (
         <div className = "App">
           <h1>Game Over</h1>
-          <h1>The correct answer was {this.state.currentQuestion.answer}</h1>
+          <h1>The correct answer was {text}</h1>
+          <button style = {buttonStyle}  onClick = {() => this.refresh()}>Play Again</button>
         </div>
         )
       }
