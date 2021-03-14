@@ -3,10 +3,10 @@ import './App.css';
 import React, { Component } from 'react';
 
 import QuestionBox from './components/questionBox'
-import Answers from './components/answers'
-import LifeLines from './components/lifeLines'
-import Board from './components/board'
-import WalkAway from './components/walkAway'
+import Answers from './components/answerBox'
+import LifeLines from './components/lifeLineBox'
+import Board from './components/boardCounter'
+import WalkAway from './components/walkAwayButton'
 
 class App extends Component {
 
